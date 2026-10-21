@@ -1,0 +1,371 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Agent-account index",
+    "description": "Read-only public JSON endpoints stating what named services say in their own terms about whether an AI agent may hold an account.",
+    "version": "2026-10-17"
+  },
+  "servers": [
+    {
+      "url": "https://agent-account-index.vercel.app"
+    }
+  ],
+  "paths": {
+    "/index.json": {
+      "get": {
+        "summary": "The index",
+        "description": "All services read, with counts.",
+        "responses": {
+          "200": {
+            "description": "JSON document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Index"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/agent-account-index.json": {
+      "get": {
+        "summary": "The index, well-known location",
+        "description": "Same document as /index.json.",
+        "responses": {
+          "200": {
+            "description": "JSON document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Index"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/first-credential.json": {
+      "get": {
+        "summary": "First-credential study",
+        "description": "Per-service route to a first credential, for the subset whose documentation names one.",
+        "responses": {
+          "200": {
+            "description": "JSON document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirstCredential"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Index": {
+        "type": "object",
+        "required": [
+          "title",
+          "what_this_is",
+          "method",
+          "field_values",
+          "finding",
+          "generated_at",
+          "count",
+          "services",
+          "counts"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "what_this_is": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "field_values": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "finding": {
+            "type": "string"
+          },
+          "generated_at": {
+            "type": "string",
+            "description": "Date of the newest dated evidence in any row, computed from the rows themselves, not a build timestamp. It moves when a service is re-read and does not move when only prose changes. Also served as serverInfo.version by the MCP endpoint at /mcp."
+          },
+          "count": {
+            "type": "integer"
+          },
+          "services": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            }
+          },
+          "counts": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "quotes_checked_exact": {
+            "type": "integer"
+          },
+          "independent_recheck": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "widen2_checked_exact": {
+            "type": "integer"
+          },
+          "widen3_checked_exact": {
+            "type": "integer"
+          },
+          "signup_door_caveat": {
+            "type": "string"
+          },
+          "signup_door_read": {
+            "type": "integer"
+          },
+          "signup_door_clean": {
+            "type": "integer"
+          },
+          "signup_door_method": {
+            "type": "string"
+          }
+        }
+      },
+      "Service": {
+        "type": "object",
+        "required": [
+          "service",
+          "terms_url",
+          "fetched_at",
+          "may_an_agent_hold_an_account",
+          "owner_of_record",
+          "named_non_human_route",
+          "quote",
+          "quote_is_exact_substring",
+          "notes",
+          "signup_door"
+        ],
+        "properties": {
+          "service": {
+            "type": "string",
+            "description": "Service name."
+          },
+          "terms_url": {
+            "type": "string",
+            "description": "Public terms page read.",
+            "format": "uri"
+          },
+          "fetched_at": {
+            "type": "string",
+            "description": "UTC timestamp of the anonymous fetch."
+          },
+          "may_an_agent_hold_an_account": {
+            "type": "string",
+            "enum": [
+              "yes_named_route",
+              "no_natural_person_required",
+              "no_automated_signup_forbidden",
+              "unstated"
+            ],
+            "description": "What the terms say about a non-human account holder."
+          },
+          "owner_of_record": {
+            "type": "string",
+            "description": "Who the terms say owns an account."
+          },
+          "named_non_human_route": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A documented route for a non-human actor, or null."
+          },
+          "quote": {
+            "type": "string",
+            "description": "Quoted terms text."
+          },
+          "quote_is_exact_substring": {
+            "type": "boolean",
+            "description": "Whether the quote was machine-checked as an exact substring of the fetched text."
+          },
+          "quote_match": {
+            "type": "string",
+            "description": "How the quote was matched (present on some rows)."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Reader notes."
+          },
+          "corrected_at": {
+            "type": "string",
+            "description": "Date of a correction (some rows)."
+          },
+          "hub_enumerated_at": {
+            "type": "string",
+            "description": "Date a hub page was enumerated (some rows)."
+          },
+          "signup_door": {
+            "type": "object",
+            "description": "What the signup page showed on load.",
+            "additionalProperties": true
+          }
+        }
+      },
+      "FirstCredential": {
+        "type": "object",
+        "required": [
+          "title",
+          "what_this_is",
+          "n",
+          "rows",
+          "generated_at"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "what_this_is": {
+            "type": "string"
+          },
+          "population_is": {
+            "type": "string"
+          },
+          "n": {
+            "type": "integer"
+          },
+          "population": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "generated_at": {
+            "type": "string"
+          },
+          "method_note": {
+            "type": "string"
+          },
+          "counts": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "contradicts_prior": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "field_values": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FirstCredentialRow"
+            }
+          }
+        }
+      },
+      "FirstCredentialRow": {
+        "type": "object",
+        "required": [
+          "service",
+          "prior_credential_issuance",
+          "command_or_endpoint",
+          "urls_tried",
+          "first_credential_route",
+          "minting_call_needs_existing_credential",
+          "contradicts_prior"
+        ],
+        "properties": {
+          "service": {
+            "type": "string"
+          },
+          "prior_credential_issuance": {
+            "type": "string"
+          },
+          "prior_credential_issuance_evidence": {
+            "type": "string"
+          },
+          "prior_credential_issuance_evidence_url": {
+            "type": "string"
+          },
+          "command_or_endpoint": {
+            "type": "string"
+          },
+          "urls_tried": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "first_credential_route": {
+            "type": "string"
+          },
+          "first_credential_route_evidence": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Exact quote, or null."
+          },
+          "first_credential_route_evidence_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Source URL, or null."
+          },
+          "first_credential_route_evidence_is_exact_substring": {
+            "type": "boolean"
+          },
+          "minting_call_needs_existing_credential": {
+            "type": "string"
+          },
+          "minting_call_needs_existing_credential_evidence": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Exact quote, or null."
+          },
+          "minting_call_needs_existing_credential_evidence_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Source URL, or null."
+          },
+          "minting_call_needs_existing_credential_evidence_is_exact_substring": {
+            "type": "boolean"
+          },
+          "contradicts_prior": {
+            "type": "boolean"
+          },
+          "unstated_reason": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

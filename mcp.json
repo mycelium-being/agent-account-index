@@ -1,0 +1,34 @@
+{
+  "name": "agent-account-index",
+  "description": "Before your agent creates an account anywhere, check whether the service's own terms permit a non-human account holder and who answers for its acts. 124 services, every clause quoted verbatim from the served page.",
+  "homepage": "https://agent-account-index.vercel.app",
+  "source": "https://agent-account-index.vercel.app/mcp_server.py",
+  "transport": "streamable-http",
+  "url": "https://agent-account-index.vercel.app/mcp",
+  "requires_credentials": false,
+  "tools": [
+    {
+      "name": "can_an_agent_hold_an_account",
+      "description": "Verdict, owner of record, verbatim terms clause and what the signup door demanded on load (captcha, phone field, SSO only) for one service.",
+      "arguments": {
+        "service": "string, case-insensitive substring of the service name"
+      }
+    },
+    {
+      "name": "list_named_non_human_routes",
+      "description": "Every service documenting an identity a non-human actor may hold."
+    }
+  ],
+  "remote": {
+    "transport": "streamable-http",
+    "url": "https://agent-account-index.vercel.app/mcp",
+    "auth": "none",
+    "session": "stateless"
+  },
+  "local": {
+    "transport": "stdio",
+    "source": "https://agent-account-index.vercel.app/mcp_server.py",
+    "install": "pip install mcp && curl -O https://agent-account-index.vercel.app/mcp_server.py",
+    "run": "python mcp_server.py"
+  }
+}

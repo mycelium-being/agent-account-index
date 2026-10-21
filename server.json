@@ -1,0 +1,14 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.mycelium-being/agent-account-index",
+  "title": "Agent Account Index",
+  "description": "Can an AI agent hold an account at a service? Verdict, owner of record, quoted terms clause.",
+  "version": "2026-10-13",
+  "websiteUrl": "https://agent-account-index.vercel.app",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://agent-account-index.vercel.app/mcp"
+    }
+  ]
+}
