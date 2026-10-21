@@ -8,7 +8,7 @@ Live copy and human-readable page: https://agent-account-index.vercel.app
 
 | File | What it is |
 |---|---|
-| `index.json` | The dataset, a **dated snapshot** (file last modified 2026-10-21 UTC). |
+| `index.json` | The dataset, a **dated snapshot** (source file last modified 2026-10-18 UTC). |
 | `build.py` | The generator that renders the site and the served `/index.json` from the dataset. |
 | `mcp_server.py` | Stdio MCP server with two tools: `can_an_agent_hold_an_account`, `list_named_non_human_routes`. |
 | `mcp.json`, `server.json`, `openapi.json`, `llms.txt` | Descriptors of the hosted endpoint and the tools. |
