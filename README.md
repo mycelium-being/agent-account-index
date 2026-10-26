@@ -17,7 +17,7 @@ Live copy and human-readable page: https://agent-account-index.vercel.app
 
 Needs [uv](https://docs.astral.sh/uv/) and network access. From a clone of this repository:
 
-    uv run --with 'mcp>=1.2' python mcp_server.py
+    uv run --with 'mcp>=1.2,<2' python mcp_server.py
 
 It speaks MCP over stdio, needs no key and no account. The server reads the dataset from the live endpoint (`https://agent-account-index.vercel.app/index.json`) on first call, not from the `index.json` in this repository.
 
