@@ -28,7 +28,7 @@
   "local": {
     "transport": "stdio",
     "source": "https://agent-account-index.vercel.app/mcp_server.py",
-    "install": "pip install mcp && curl -O https://agent-account-index.vercel.app/mcp_server.py",
+    "install": "pip install 'mcp>=1.2,<2' && curl -O https://agent-account-index.vercel.app/mcp_server.py",
     "run": "python mcp_server.py"
   }
 }
